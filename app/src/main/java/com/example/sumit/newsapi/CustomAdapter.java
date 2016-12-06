@@ -1,6 +1,7 @@
 package com.example.sumit.newsapi;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,7 +45,15 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context,my_data.get(position).getId()+"",Toast.LENGTH_SHORT).show();
+                Toast.makeText(context,my_data.get(position).getId().toString(),Toast.LENGTH_SHORT).show();
+
+                Intent intent=new Intent(context,ReadSourceNews.class);
+
+                intent.putExtra("name",my_data.get(position).getName().toString());
+                intent.putExtra("id",my_data.get(position).getId().toString());
+                intent.putExtra("logo",my_data.get(position).getImage_link().toString());
+
+                context.startActivity(intent);
             }
         });
 
@@ -57,7 +66,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
 
     public  class ViewHolder extends  RecyclerView.ViewHolder{
 
-        public TextView description;
+
         public ImageView imageView;
 
         public ViewHolder(View itemView) {

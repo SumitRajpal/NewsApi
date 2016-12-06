@@ -21,35 +21,37 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
-    private String TAG ="res";
-    private RecyclerView recyclerView;
-    private GridLayoutManager gridLayoutManager;
-    private CustomAdapter adapter;
-    private List<MyData> data_list;
+public class ReadSourceNews extends AppCompatActivity {
+    private String TAG ="res",url,logoview;
+    private RecyclerView recyclerViewDetail;
+
+    private LinearLayoutManager linearLayoutManager;
+
+    private CustomAdapterDetail adapterDetail;
+
+    private List<MyDataDetail> data_list_detail;
     private ProgressDialog pd;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        pd = new ProgressDialog(MainActivity.this);
+        setContentView(R.layout.activity_read_source_news);
+        pd = new ProgressDialog(ReadSourceNews.this);
         pd.setMessage("Loading . . . ");
-        data_list  = new ArrayList<>();
-        load_data_from_server();
+        url = "https://newsapi.org/v1/articles?source="+getIntent().getStringExtra("id")+"&apiKey=08139016b79b4fdebd1f0e12ea3ec090";
+        logoview = getIntent().getStringExtra("logo").toString();
+        recyclerViewDetail = (RecyclerView) findViewById(R.id.recycler_view_detail);
+        data_list_detail  = new ArrayList<>();
+        load_data_from_server__detail();
 
-        gridLayoutManager = new GridLayoutManager(this,3);
-        recyclerView.setLayoutManager(gridLayoutManager);
+        linearLayoutManager = new LinearLayoutManager(this);
+        recyclerViewDetail.setLayoutManager(linearLayoutManager);
 
-        adapter = new CustomAdapter(this,data_list);
-        recyclerView.setAdapter(adapter);
-
-
-
+        adapterDetail = new CustomAdapterDetail(this,data_list_detail);
+        recyclerViewDetail.setAdapter(adapterDetail);
     }
-    private void load_data_from_server() {
-        String url = "https://newsapi.org/v1/sources";
-        pd.show();
+    private void load_data_from_server__detail() {
+
+pd.show();
         StringRequest stringRequest = new StringRequest(Request.Method.GET,
                 url,
                 new Response.Listener<String>() {
@@ -60,17 +62,18 @@ public class MainActivity extends AppCompatActivity {
                         JSONObject jObject  = null;
                         try {
                             jObject = new JSONObject(response);
-                            JSONArray jsonarray = new JSONArray(jObject.getString("sources"));
+                            JSONArray jsonarray = new JSONArray(jObject.getString("articles"));
                             for(int i=0; i < jsonarray.length(); i++) {
 
                                 JSONObject jsonobject = jsonarray.getJSONObject(i);
-                                String id       = jsonobject.getString("id");
-                                String name       = jsonobject.getString("name");
-                                Log.d(TAG,id+"------"+name+"----"+jsonobject.getJSONObject("urlsToLogos").getString("large"));
-                                MyData data = new MyData(id.toString(),name.toString(),jsonobject.getJSONObject("urlsToLogos").getString("large").toString());
+                                String author       = jsonobject.getString("author");
+                                String title       = jsonobject.getString("title");
+                                String urlImage       = jsonobject.getString("urlToImage");
+                                Log.d(TAG,author+"------"+title+"----"+"-----"+urlImage);
+                                MyDataDetail data = new MyDataDetail(title,author,urlImage,logoview);
 
-                                data_list.add(data);
-                                adapter.notifyDataSetChanged();
+                                data_list_detail.add(data);
+                                adapterDetail.notifyDataSetChanged();
                                 pd.hide();
                             }
                         } catch (JSONException e) {
@@ -102,6 +105,5 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        load_data_from_server();
     }
 }
