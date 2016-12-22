@@ -14,7 +14,7 @@ public class Main2Activity extends AppCompatActivity {
             public void run() {
 
                 try {
-                    // Thread will sleep for 5 seconds
+
                     sleep(2000);
 
 
@@ -29,7 +29,7 @@ public class Main2Activity extends AppCompatActivity {
             }
         };
 
-        
+
         background.start();
     }
 }

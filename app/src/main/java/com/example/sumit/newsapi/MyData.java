@@ -27,8 +27,8 @@ public class MyData {
         return name;
     }
 
-    public void setName(String description) {
-        this.name = description;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getImage_link() {

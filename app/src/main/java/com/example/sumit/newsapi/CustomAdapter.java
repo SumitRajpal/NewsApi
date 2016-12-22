@@ -45,7 +45,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context,my_data.get(position).getId().toString(),Toast.LENGTH_SHORT).show();
+
 
                 Intent intent=new Intent(context,ReadSourceNews.class);
 

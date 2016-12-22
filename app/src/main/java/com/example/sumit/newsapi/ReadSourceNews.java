@@ -69,7 +69,7 @@ pd.show();
                                 String author       = jsonobject.getString("author");
                                 String title       = jsonobject.getString("title");
                                 String urlImage       = jsonobject.getString("urlToImage");
-                                Log.d(TAG,author+"------"+title+"----"+"-----"+urlImage);
+
                                 MyDataDetail data = new MyDataDetail(title,author,urlImage,logoview);
 
                                 data_list_detail.add(data);
